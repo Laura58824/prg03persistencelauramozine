@@ -4,7 +4,8 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.CursoSave;
+import br.com.ifba.curso.dao.CursoIDao;
+import br.com.ifba.curso.dao.CursoDao;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 
@@ -127,6 +128,7 @@ public class CursoEditar extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -143,8 +145,8 @@ public class CursoEditar extends javax.swing.JFrame {
             curso.setDescricao(txtDescricao.getText());
             curso.setFornecedor(txtFornecedor.getText());
 
-            CursoSave cursoSave = new CursoSave(); // cria objeto responsável por acessar o banco
-            cursoSave.update(curso);// atualiza no banco (merge no JPA)
+            CursoIDao cursoDao = new CursoDao();
+            cursoDao.update(curso);
 
             JOptionPane.showMessageDialog(this, "Curso atualizado!"); // mensagem de sucesso
 

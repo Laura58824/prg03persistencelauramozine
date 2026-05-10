@@ -4,35 +4,40 @@
  */
 package br.com.ifba.curso.entity;
 
+import br.com.ifba.infrastructure.entity.PersistenceEntity;
 import java.io.Serializable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 
-
-
-/**
- *
- * @author m
- */
-
-/**
- * Entidade que representa a tabela "Curso" no banco de dados.
- * Cada objeto dessa classe é um registro na tabela.
- */
 
 @Entity  // Indica que essa classe é uma entidade JPA (vira tabela no banco)
-public class Curso implements Serializable {
-    @Id // define que este atributo é a chave primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-     // o banco gera o ID automaticamente (auto incremento)
-    private Long id;
-    
+@Table(name = "cursos")
+public class Curso extends PersistenceEntity implements Serializable {
+    /**
+     * Nome do curso.
+     * Não pode ser nulo.
+     */
+    @Column(name = "nome", nullable = false)
     private String nome;
+
+    /**
+     * Quantidade de vagas ou itens do curso.
+     */
+    @Column(name = "quantidade")
     private Integer quantidade;
+
+    /**
+     * Descrição do curso.
+     */
+    @Column(name = "descricao")
     private String descricao;
+
+    /**
+     * Nome do fornecedor do curso.
+     */
+    @Column(name = "fornecedor")
     private String fornecedor;
    
     
@@ -84,8 +89,5 @@ public class Curso implements Serializable {
         this.fornecedor = fornecedor;
     }
     
-    public Long getId() {
-    return id;
-    }
 
 }

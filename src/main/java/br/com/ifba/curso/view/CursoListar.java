@@ -4,11 +4,12 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.CursoSave;
+
+import br.com.ifba.curso.dao.CursoDao;
+import br.com.ifba.curso.dao.CursoIDao;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 public class CursoListar extends javax.swing.JFrame {
 
@@ -20,7 +21,7 @@ public class CursoListar extends javax.swing.JFrame {
     public CursoListar() { //construtor
         initComponents();// inicializa interface gráfica (Swing)
         listarCursos();// carrega os cursos do banco ao abrir a tela
-    
+
         //Esconde a coluna ID da tabela (mas continua existindo internamente)
         jTable1.getColumn("ID").setMinWidth(0);
         jTable1.getColumn("ID").setMaxWidth(0);
@@ -31,15 +32,15 @@ public class CursoListar extends javax.swing.JFrame {
     private void listarCursos() {
 
         try {
-              // pega o modelo da tabela (estrutura da JTable)
+            // pega o modelo da tabela (estrutura da JTable)
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
             modelo.setRowCount(0);  // limpa a tabela antes de recarregar os dados
 
-            CursoSave cursoSave = new CursoSave(); // cria acesso ao banco
+            CursoIDao cursoDao = new CursoDao(); // cria acesso ao banco
 
-            for (Curso curso : cursoSave.findAll()) {// percorre todos os cursos do banco
-               // adiciona cada curso como uma linha na tabela
+            for (Curso curso : cursoDao.findAll()) {// percorre todos os cursos do banco
+                // adiciona cada curso como uma linha na tabela
                 modelo.addRow(new Object[]{
                     curso.getId(),
                     curso.getNome(),
@@ -52,7 +53,7 @@ public class CursoListar extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {  // mostra erro caso falhe ao carregar dados
-            JOptionPane.showMessageDialog( this, "Erro ao listar: " + e.getMessage() );
+            JOptionPane.showMessageDialog(this, "Erro ao listar: " + e.getMessage());
         }
     }
 
@@ -77,6 +78,7 @@ public class CursoListar extends javax.swing.JFrame {
         btnHomes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,46 +98,26 @@ public class CursoListar extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 740, 260));
+
         txtBusca.addActionListener(this::txtBuscaActionPerformed);
         txtBusca.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscaKeyReleased(evt);
             }
         });
+        getContentPane().add(txtBusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 262, -1));
 
         btnAdd.setText("+");
         btnAdd.addActionListener(this::btnAddActionPerformed);
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(423, 38, -1, -1));
 
         btnHomes.setText("Homescreen");
         btnHomes.addActionListener(this::btnHomesActionPerformed);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
-                .addComponent(btnAdd)
-                .addGap(132, 132, 132)
-                .addComponent(btnHomes)
-                .addGap(63, 63, 63))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdd)
-                    .addComponent(btnHomes))
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
-        );
+        getContentPane().add(btnHomes, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 40, 110, 30));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHomesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomesActionPerformed
@@ -163,9 +145,9 @@ public class CursoListar extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             modelo.setRowCount(0);
 
-            CursoSave cursoSave = new CursoSave();
+            CursoIDao cursoDao = new CursoDao();
 
-            for (Curso curso : cursoSave.findAll()) {
+            for (Curso curso : cursoDao.findAll()) {
                 if (curso.getNome().toLowerCase().contains(busca)) {
                     modelo.addRow(new Object[]{
                         curso.getId(),
@@ -173,7 +155,7 @@ public class CursoListar extends javax.swing.JFrame {
                         curso.getQuantidade(),
                         curso.getDescricao(),
                         curso.getFornecedor(),
-                        "Excluir", 
+                        "Excluir",
                         "Editar"
                     });
                 }
@@ -197,23 +179,23 @@ public class CursoListar extends javax.swing.JFrame {
             return;
         }
 
-        CursoSave cursoSave = new CursoSave(); // Cria um objeto para acessar os métodos do banco
-        
+        CursoIDao cursoDao = new CursoDao(); // Cria um objeto para acessar os métodos do banco
+
         // Pega o ID do curso da linha selecionada
-         // O ID está armazenado na coluna 0 da tabela
+        // O ID está armazenado na coluna 0 da tabela
         Long id = (Long) jTable1.getValueAt(row, 0);
-        
-         // Pega o valor da célula clicada
+
+        // Pega o valor da célula clicada
         Object valorObj = jTable1.getValueAt(row, col);
-        
+
         // Converte o valor para String
         // Se for null, recebe string vazia
         String valor = (valorObj != null) ? valorObj.toString() : "";
-        
+
         // Verifica se clicou na coluna "Excluir"
         // e se o texto da célula é "Excluir"
         if (col == 5 && "Excluir".equals(valor)) {
-            // Mostra uma janela pedindo confirmação
+
             int confirm = JOptionPane.showConfirmDialog(
                     this,
                     "Tem certeza que deseja excluir este curso?",
@@ -223,32 +205,25 @@ public class CursoListar extends javax.swing.JFrame {
 
             if (confirm == JOptionPane.YES_OPTION) {
 
-                cursoSave.delete(id); // Se o usuário clicar em "Sim" Exclui o curso usando o ID
-                listarCursos(); // Atualiza a tabela
+                Curso curso = cursoDao.findById(id);
+                cursoDao.delete(curso);
+
+                listarCursos();
             }
         }
 
-        if (col == 6 && "Editar".equals(valor)) {  // Verifica se clicou na coluna "Editar"
+        if (col == 6 && "Editar".equals(valor)) {
 
-            Curso cursoEncontrado = null; // Variável para armazenar o curso encontrado
+            Curso cursoEncontrado = cursoDao.findById(id);
 
-            for (Curso c : cursoSave.findAll()) {// Percorre todos os cursos do banco
-                if (id != null && id.equals(c.getId())) { // Verifica se o ID do curso é igual ao ID selecionado
-                    cursoEncontrado = c;   // Guarda o curso encontrado
-                    break;//encerra o for
-                }
-            }
-
-            if (cursoEncontrado == null) {   // Se não encontrou o curso
-                JOptionPane.showMessageDialog(this, "Curso não encontrado.");//exibe mensagem
+            if (cursoEncontrado == null) {
+                JOptionPane.showMessageDialog(this, "Curso não encontrado.");
                 return;
             }
-            // Cria a tela de edição
-             // Envia o curso encontrado e a tela atual
+
             CursoEditar tela = new CursoEditar(cursoEncontrado, this);
             tela.setVisible(true);
         }
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     /**

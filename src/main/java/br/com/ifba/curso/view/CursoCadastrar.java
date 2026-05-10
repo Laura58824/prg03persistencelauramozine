@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package br.com.ifba.curso.view;
-import br.com.ifba.CursoSave;
-
+import br.com.ifba.curso.dao.CursoDao;
+import br.com.ifba.curso.dao.CursoIDao;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 
@@ -114,6 +114,7 @@ public class CursoCadastrar extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbSalvarActionPerformed
@@ -131,9 +132,11 @@ public class CursoCadastrar extends javax.swing.JFrame {
            Curso curso = new Curso(nome, quantidade, descricao,fornecedor);
            
             // 3. Classe responsável pelo banco
-           CursoSave cursoSave = new CursoSave();
-            // 4. Salva no banco (CREATE)
-           cursoSave.create(curso);
+           CursoIDao cursoDao = new CursoDao();
+           // 4. Salva no banco 
+           cursoDao.save(curso);
+            
+           
            //5.Aparece mensagem de sucesso
            JOptionPane.showMessageDialog( this, "Curso salvo com sucesso!");
            // 6. Fecha a tela após salvar
