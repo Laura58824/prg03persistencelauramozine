@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package br.com.ifba.curso.view;
-import br.com.ifba.curso.dao.CursoDao;
-import br.com.ifba.curso.dao.CursoIDao;
+import br.com.ifba.curso.controller.CursoController;
+import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 
@@ -132,9 +132,9 @@ public class CursoCadastrar extends javax.swing.JFrame {
            Curso curso = new Curso(nome, quantidade, descricao,fornecedor);
            
             // 3. Classe responsável pelo banco
-           CursoIDao cursoDao = new CursoDao();
+           CursoIController cursoController = new CursoController();
            // 4. Salva no banco 
-           cursoDao.save(curso);
+           cursoController.save(curso);
             
            
            //5.Aparece mensagem de sucesso

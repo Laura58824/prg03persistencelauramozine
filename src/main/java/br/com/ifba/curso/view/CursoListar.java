@@ -5,8 +5,8 @@
 package br.com.ifba.curso.view;
 
 
-import br.com.ifba.curso.dao.CursoDao;
-import br.com.ifba.curso.dao.CursoIDao;
+import br.com.ifba.curso.controller.CursoController;
+import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -36,10 +36,11 @@ public class CursoListar extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
             modelo.setRowCount(0);  // limpa a tabela antes de recarregar os dados
+            
+            CursoIController cursoController = new CursoController();
+             // cria acesso ao banco
 
-            CursoIDao cursoDao = new CursoDao(); // cria acesso ao banco
-
-            for (Curso curso : cursoDao.findAll()) {// percorre todos os cursos do banco
+            for (Curso curso : cursoController.findAll()) {// percorre todos os cursos do banco
                 // adiciona cada curso como uma linha na tabela
                 modelo.addRow(new Object[]{
                     curso.getId(),
@@ -88,7 +89,7 @@ public class CursoListar extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NOME", "QUANTIDAE", "DESCRIÇÃO", "FORNECEDOR", "REMOVER", "EDITAR"
+                "ID", "NOME", "QUANTIDADE", "DESCRIÇÃO", "FORNECEDOR", "REMOVER", "EDITAR"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -145,9 +146,9 @@ public class CursoListar extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             modelo.setRowCount(0);
 
-            CursoIDao cursoDao = new CursoDao();
+            CursoIController cursoController = new CursoController();
 
-            for (Curso curso : cursoDao.findAll()) {
+            for (Curso curso : cursoController.findAll()) {
                 if (curso.getNome().toLowerCase().contains(busca)) {
                     modelo.addRow(new Object[]{
                         curso.getId(),
@@ -179,7 +180,7 @@ public class CursoListar extends javax.swing.JFrame {
             return;
         }
 
-        CursoIDao cursoDao = new CursoDao(); // Cria um objeto para acessar os métodos do banco
+        CursoIController cursoController = new CursoController(); // Cria um objeto para acessar os métodos do banco
 
         // Pega o ID do curso da linha selecionada
         // O ID está armazenado na coluna 0 da tabela
@@ -205,8 +206,8 @@ public class CursoListar extends javax.swing.JFrame {
 
             if (confirm == JOptionPane.YES_OPTION) {
 
-                Curso curso = cursoDao.findById(id);
-                cursoDao.delete(curso);
+                Curso curso = cursoController.findById(id);
+                cursoController.delete(curso);
 
                 listarCursos();
             }
@@ -214,7 +215,7 @@ public class CursoListar extends javax.swing.JFrame {
 
         if (col == 6 && "Editar".equals(valor)) {
 
-            Curso cursoEncontrado = cursoDao.findById(id);
+            Curso cursoEncontrado = cursoController.findById(id);
 
             if (cursoEncontrado == null) {
                 JOptionPane.showMessageDialog(this, "Curso não encontrado.");

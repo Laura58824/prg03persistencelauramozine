@@ -6,7 +6,6 @@ package br.com.ifba.curso.dao;
 
 import br.com.ifba.curso.entity.Curso;
 import br.com.ifba.infrastructure.dao.GenericDao;
-import br.com.ifba.infrastructure.dao.GenericIDao;
 
 /**
  *

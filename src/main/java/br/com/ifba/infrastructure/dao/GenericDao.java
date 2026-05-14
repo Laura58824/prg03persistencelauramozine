@@ -98,23 +98,7 @@ public class GenericDao<Entity extends PersistenceEntity> implements GenericIDao
             .getGenericSuperclass())
             .getActualTypeArguments()[0];
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
     
     
 }

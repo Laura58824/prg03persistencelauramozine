@@ -4,8 +4,8 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.curso.dao.CursoIDao;
-import br.com.ifba.curso.dao.CursoDao;
+import br.com.ifba.curso.controller.CursoController;
+import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 
@@ -145,8 +145,8 @@ public class CursoEditar extends javax.swing.JFrame {
             curso.setDescricao(txtDescricao.getText());
             curso.setFornecedor(txtFornecedor.getText());
 
-            CursoIDao cursoDao = new CursoDao();
-            cursoDao.update(curso);
+            CursoIController cursoController = new CursoController();
+            cursoController.update(curso);
 
             JOptionPane.showMessageDialog(this, "Curso atualizado!"); // mensagem de sucesso
 
