@@ -10,11 +10,15 @@ import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CursoListar extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoListar.class.getName());
-
+    @Autowired
+   private CursoIController cursoController;
     /**
      * Creates new form CursoListar
      */
@@ -146,8 +150,6 @@ public class CursoListar extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             modelo.setRowCount(0);
 
-            CursoIController cursoController = new CursoController();
-
             for (Curso curso : cursoController.findAll()) {
                 if (curso.getNome().toLowerCase().contains(busca)) {
                     modelo.addRow(new Object[]{
@@ -180,7 +182,7 @@ public class CursoListar extends javax.swing.JFrame {
             return;
         }
 
-        CursoIController cursoController = new CursoController(); // Cria um objeto para acessar os métodos do banco
+   
 
         // Pega o ID do curso da linha selecionada
         // O ID está armazenado na coluna 0 da tabela
