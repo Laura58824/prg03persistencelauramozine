@@ -7,16 +7,20 @@ import br.com.ifba.curso.controller.CursoController;
 import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Tela responsável por cadastrar novos cursos.
  * Aqui o usuário preenche os dados e o sistema salva no banco.
  */
+@Component
 
 public class CursoCadastrar extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoCadastrar.class.getName());
-
+    @Autowired
+    private CursoIController cursoController;
     /**
      * Creates new form CursoCadastrar
      */
@@ -131,15 +135,14 @@ public class CursoCadastrar extends javax.swing.JFrame {
             // 2. Cria objeto Curso (entidade)
            Curso curso = new Curso(nome, quantidade, descricao,fornecedor);
            
-            // 3. Classe responsável pelo banco
-           CursoIController cursoController = new CursoController();
-           // 4. Salva no banco 
+
+           // 3. Salva no banco 
            cursoController.save(curso);
             
            
-           //5.Aparece mensagem de sucesso
+           //4.Aparece mensagem de sucesso
            JOptionPane.showMessageDialog( this, "Curso salvo com sucesso!");
-           // 6. Fecha a tela após salvar
+           // 5. Fecha a tela após salvar
            dispose();
 
          } catch (Exception e) {  // Tratamento de erro (ex: número inválido)

@@ -5,7 +5,8 @@
 package br.com.ifba.curso.view;
 
 
-import br.com.ifba.curso.controller.CursoController;
+
+import br.com.ifba.App;
 import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
@@ -13,7 +14,9 @@ import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+ 
 @Component
+
 public class CursoListar extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoListar.class.getName());
@@ -24,15 +27,19 @@ public class CursoListar extends javax.swing.JFrame {
      */
     public CursoListar() { //construtor
         initComponents();// inicializa interface gráfica (Swing)
-        listarCursos();// carrega os cursos do banco ao abrir a tela
+        
 
         //Esconde a coluna ID da tabela (mas continua existindo internamente)
         jTable1.getColumn("ID").setMinWidth(0);
         jTable1.getColumn("ID").setMaxWidth(0);
         jTable1.getColumn("ID").setWidth(0);
         jTable1.getColumn("ID").setPreferredWidth(0);
+        javax.swing.SwingUtilities.invokeLater(() -> listarCursos());
     }
-
+    
+    public void inicializar() {
+            listarCursos();
+     }
     private void listarCursos() {
 
         try {
@@ -40,10 +47,7 @@ public class CursoListar extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
             modelo.setRowCount(0);  // limpa a tabela antes de recarregar os dados
-            
-            CursoIController cursoController = new CursoController();
-             // cria acesso ao banco
-
+           
             for (Curso curso : cursoController.findAll()) {// percorre todos os cursos do banco
                 // adiciona cada curso como uma linha na tabela
                 modelo.addRow(new Object[]{
@@ -130,9 +134,10 @@ public class CursoListar extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomesActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        CursoCadastrar tela = new CursoCadastrar();     // abre tela de cadastro
+        CursoCadastrar tela =
+        App.context.getBean(CursoCadastrar.class);
 
-        tela.setVisible(true);
+       tela.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void txtBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscaActionPerformed
@@ -224,7 +229,13 @@ public class CursoListar extends javax.swing.JFrame {
                 return;
             }
 
-            CursoEditar tela = new CursoEditar(cursoEncontrado, this);
+            CursoEditar tela = new CursoEditar(
+            cursoEncontrado,
+            this,
+            cursoController
+            );
+
+ 
             tela.setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -232,27 +243,7 @@ public class CursoListar extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CursoListar().setVisible(true));
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

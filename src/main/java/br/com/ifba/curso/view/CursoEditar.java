@@ -4,7 +4,7 @@
  */
 package br.com.ifba.curso.view;
 
-import br.com.ifba.curso.controller.CursoController;
+import org.springframework.beans.factory.annotation.Autowired;
 import br.com.ifba.curso.controller.CursoIController;
 import br.com.ifba.curso.entity.Curso;
 import javax.swing.JOptionPane;
@@ -12,19 +12,22 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author m
+ * 
  */
+
 public class CursoEditar extends javax.swing.JFrame {
 
     private Curso curso;   // objeto que representa o curso selecionado na tabela
     private CursoListar telaListar;  // referência da tela de listagem (para atualizar tabela depois da edição)
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoEditar.class.getName());// logger (não está sendo usado aqui, mas serve para logs do sistema)
-
+    private final CursoIController cursoController;
+   
     /**
      * Creates new form CursoEditar
      */
-    public CursoEditar(Curso curso, CursoListar telaListar) {  // construtor recebe o curso selecionado e a tela de listagem
+    public CursoEditar(Curso curso, CursoListar telaListar, CursoIController cursoController) {  // construtor recebe o curso selecionado e a tela de listagem
         initComponents();// inicializa os componentes da interface (Swing)
-
+        this.cursoController = cursoController;
         this.curso = curso;    // guarda o curso recebido para edição
         this.telaListar = telaListar; // guarda referência da tela de listagem
 
@@ -145,7 +148,7 @@ public class CursoEditar extends javax.swing.JFrame {
             curso.setDescricao(txtDescricao.getText());
             curso.setFornecedor(txtFornecedor.getText());
 
-            CursoIController cursoController = new CursoController();
+            
             cursoController.update(curso);
 
             JOptionPane.showMessageDialog(this, "Curso atualizado!"); // mensagem de sucesso
