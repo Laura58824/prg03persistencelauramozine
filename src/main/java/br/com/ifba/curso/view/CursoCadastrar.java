@@ -18,7 +18,9 @@ import org.springframework.stereotype.Component;
 
 public class CursoCadastrar extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoCadastrar.class.getName());
+   private static final java.util.logging.Logger LOG = 
+    java.util.logging.Logger.getLogger(CursoCadastrar.class.getName());
+   
     @Autowired
     private CursoIController cursoController;
     /**
@@ -168,7 +170,7 @@ public class CursoCadastrar extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            LOG.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

@@ -13,13 +13,15 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import lombok.extern.java.Log;
 
- 
+
 @Component
 
 public class CursoListar extends javax.swing.JFrame {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CursoListar.class.getName());
+    private static final java.util.logging.Logger LOG = 
+    java.util.logging.Logger.getLogger(CursoListar.class.getName());
     @Autowired
    private CursoIController cursoController;
     /**
@@ -42,28 +44,28 @@ public class CursoListar extends javax.swing.JFrame {
      }
     private void listarCursos() {
 
-        try {
-            // pega o modelo da tabela (estrutura da JTable)
-            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+          try {
+        LOG.info("Carregando lista de cursos...");
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        modelo.setRowCount(0);
 
-            modelo.setRowCount(0);  // limpa a tabela antes de recarregar os dados
-           
-            for (Curso curso : cursoController.findAll()) {// percorre todos os cursos do banco
-                // adiciona cada curso como uma linha na tabela
-                modelo.addRow(new Object[]{
-                    curso.getId(),
-                    curso.getNome(),
-                    curso.getQuantidade(),
-                    curso.getDescricao(),
-                    curso.getFornecedor(),
-                    "Excluir",// botão textual
-                    "Editar"// botão textual
-                });
-            }
-
-        } catch (Exception e) {  // mostra erro caso falhe ao carregar dados
-            JOptionPane.showMessageDialog(this, "Erro ao listar: " + e.getMessage());
+        for (Curso curso : cursoController.findAll()) {
+            modelo.addRow(new Object[]{
+                curso.getId(),
+                curso.getNome(),
+                curso.getQuantidade(),
+                curso.getDescricao(),
+                curso.getFornecedor(),
+                "Excluir",
+                "Editar"
+            });
         }
+        LOG.info("Cursos carregados com sucesso.");
+
+    } catch (Exception e) {
+        LOG.severe("Erro ao listar: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Erro ao listar: " + e.getMessage());
+    }
     }
 
     public void recarregarTabela() {
